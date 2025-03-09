@@ -1,0 +1,132 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <changeSet id="2025.03.07.001" author="yuri.raduntsev" context="default">
+    <createTable tableName="employees">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_employees"/>
+      </column>
+      <column name="username" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="role" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="account_non_expired" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="account_non_locked" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="credentials_non_expired" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="enabled" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="2025.03.07.002" author="yuri.raduntsev" context="default">
+    <createTable tableName="tasks">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_tasks"/>
+      </column>
+      <column name="title" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="comment" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="status" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="priority" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="employee_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint
+        baseTableName="tasks"
+        baseColumnNames="employee_id"
+        constraintName="fk_task_employee"
+        referencedTableName="employees"
+        referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="2025.03.07.003" author="yuri.raduntsev" context="default">
+    <createTable tableName="comments">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_comments"/>
+      </column>
+      <column name="text" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="task_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="employee_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint
+        baseTableName="comments"
+        baseColumnNames="task_id"
+        constraintName="fk_comment_task"
+        referencedTableName="tasks"
+        referencedColumnNames="id"/>
+    <addForeignKeyConstraint
+        baseTableName="comments"
+        baseColumnNames="employee_id"
+        constraintName="fk_comment_employee"
+        referencedTableName="employees"
+        referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="2025.03.07.004" author="yuri.raduntsev" context="default">
+    <createTable tableName="task_assignee">
+      <column name="task_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="employee_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addPrimaryKey
+        tableName="task_assignee"
+        columnNames="task_id, employee_id"
+        constraintName="pk_task_assignee"/>
+    <addForeignKeyConstraint
+        baseTableName="task_assignee"
+        baseColumnNames="task_id"
+        constraintName="fk_task_assignee_task"
+        referencedTableName="tasks"
+        referencedColumnNames="id"/>
+    <addForeignKeyConstraint
+        baseTableName="task_assignee"
+        baseColumnNames="employee_id"
+        constraintName="fk_task_assignee_employee"
+        referencedTableName="employees"
+        referencedColumnNames="id"/>
+  </changeSet>
+</databaseChangeLog>

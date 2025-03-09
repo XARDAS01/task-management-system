@@ -1,0 +1,14 @@
+task:
+  create: Create a new task
+  getById: Retrieve task details by its unique identifier
+  delete: Remove a task using its unique identifier
+  update: Update task by its unique identifier
+auth:
+  signUp: New user registration
+  signIn: Login user by username and password
+comment:
+  create: Create new comment to task
+  delete: Delete comment from task
+employee:
+  assign: Assign employee to task
+  list: Get list of all employees pageable
