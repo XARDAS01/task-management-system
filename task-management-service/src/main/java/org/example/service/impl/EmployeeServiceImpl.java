@@ -29,11 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
 
-    @NonNull
     @Override
-    public Page<EmployeeDto> employeeList(@NonNull Pageable pageable) {
-        return employeeRepository.findAll(pageable)
-                .map(employeeMapper::mapToDto);
+    public Page<EmployeeDto> employeeList(Pageable pageable) {
+        return employeeRepository.findAll(pageable).map(employeeMapper::mapToDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -43,6 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new ObjectNotFoundException(Employee.class));
         final var task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ObjectNotFoundException(Task.class));
+
+        log.info("New assign task: {}", task.getId());
         task.getAssignees().add(employee);
     }
 }

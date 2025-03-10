@@ -1,0 +1,5 @@
+org/example/mapper/EmployeeMapperTest.class
+org/example/AppTest.class
+org/example/mapper/TaskMapperTest.class
+org/example/mapper/UserInfoMapperTest.class
+org/example/mapper/CommentMapperTest.class

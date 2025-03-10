@@ -36,12 +36,15 @@ public class CommentServiceImpl implements CommentService {
         final var employee = employeePrincipal.getUser();
         final var task = taskRepository.findById(commentRequest.taskId())
                 .orElseThrow(() -> new ObjectNotFoundException(Task.class));
+
+        log.info("New comment on task: {}", commentRequest.taskId());
         return commentRepository.save(commentMapper.mapToEntity(commentRequest.text(), task, employee));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public void delete(@NonNull UUID id) {
+        log.info("Comment delete: {}", id);
         commentRepository.deleteById(id);
     }
 }

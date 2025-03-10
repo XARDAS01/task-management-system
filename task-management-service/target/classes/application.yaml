@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: task-management-service
+  profiles:
+    include: api
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    username: root
+    password: root
+    hikari:
+      validation-timeout: 30000
+  liquibase:
+    change-log: classpath:/db/migrations/db.migrations-master.xml
+    drop-first: false
+    enabled: true
+
+task-management:
+  security:
+    jwt:
+      secret: hncd435l9xmed2334jnrexcvbn6450293845ndwer43hdzmafp73h5m9d70fjmc8sw3
+
+
+openapi:
+  service:
+    title: Task management service
+    version: 1
+    url: /

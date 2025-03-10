@@ -1,14 +1,21 @@
 package org.example.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.example.api.dto.EmployeeDto;
 import org.example.api.dto.ReferenceDto;
 import org.example.api.dto.TaskDto;
+import org.example.api.query.TaskQueryParams;
 import org.example.api.request.CreateTaskRequest;
 import org.example.api.request.MultiIdRequest;
 import org.example.enums.TaskStatusType;
 import org.example.service.TaskService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +25,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/task")
 public record TaskController(TaskService taskService) {
+
+    @GetMapping
+    @Operation(summary = "${task.page}", responses = @ApiResponse(responseCode = "200"))
+    @PageableAsQueryParam
+    public ResponseEntity<Page<TaskDto>> employeeList(@Parameter(hidden = true) Pageable pageable,
+                                                          @ParameterObject TaskQueryParams queryParams) {
+        return ResponseEntity.ok().body(taskService.taskList(pageable, queryParams));
+    }
 
     @PostMapping("/create")
     @Operation(summary = "${task.create}", responses = @ApiResponse(responseCode = "201"))
