@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.example.api.dto.EmployeeDto;
 import org.example.api.dto.ReferenceDto;
 import org.example.api.dto.TaskDto;
 import org.example.api.query.TaskQueryParams;
@@ -30,7 +29,7 @@ public record TaskController(TaskService taskService) {
     @Operation(summary = "${task.page}", responses = @ApiResponse(responseCode = "200"))
     @PageableAsQueryParam
     public ResponseEntity<Page<TaskDto>> employeeList(@Parameter(hidden = true) Pageable pageable,
-                                                          @ParameterObject TaskQueryParams queryParams) {
+                                                          @ParameterObject @Valid TaskQueryParams queryParams) {
         return ResponseEntity.ok().body(taskService.taskList(pageable, queryParams));
     }
 
